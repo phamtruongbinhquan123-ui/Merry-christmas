@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Merry Christmas - Sân Khấu Giáng Sinh</title>
+<style>
+  @import url('https://googleapis.com');
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background: radial-gradient(circle at center top, #330505 0%, #09090b 65%, #000000 100%);
+    color: #ffffff;
+    font-family: 'Quicksand', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  .stage-lasers {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .laser {
+    position: absolute;
+    top: -10px;
+    width: 2.5px;
+    height: 125vh;
+    transform-origin: top center;
+    opacity: 0.5;
+    filter: blur(0.4px);
+    animation: sweep ease-in-out infinite alternate;
+  }
+
+  @keyframes sweep {
+    0% { transform: rotate(var(--start-deg)); opacity: 0.2; }
+    50% { opacity: 0.75; }
+    100% { transform: rotate(var(--end-deg)); opacity: 0.25; }
+  }
+
+  .sparkles {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .bling {
+    position: absolute;
+    border-radius: 50%;
+    animation: fall linear infinite, twinkle 1.4s ease-in-out infinite alternate;
+  }
+
+  @keyframes fall {
+    to { transform: translateY(105vh); }
+  }
+
+  @keyframes twinkle {
+    from { opacity: 0.2; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1.35); }
+  }
+
+  .stage-wrapper {
+    position: relative;
+    z-index: 2;
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 25px 20px 60px;
+  }
+
+  .stage-lights {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 18px;
+  }
+
+  .bulb {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #ffd700;
+    box-shadow: 0 0 15px #ffd700, 0 0 30px #ffae00;
+    animation: blink 1.1s infinite alternate;
+  }
+  .bulb:nth-child(even) {
+    background: #ff1e38;
+    box-shadow: 0 0 15px #ff1e38, 0 0 30px #d90429;
+    animation-delay: 0.55s;
+  }
+
+  @keyframes blink {
+    from { opacity: 0.35; transform: scale(0.85); }
+    to { opacity: 1; transform: scale(1.25); }
+  }
+
+  header {
+    text-align: center;
+    padding: 22px 15px;
+    border: 2px solid #ffd700;
+    border-radius: 16px;
+    background: rgba(12, 12, 15, 0.88);
+    box-shadow: 0 0 28px rgba(255, 215, 0, 0.4), inset 0 0 22px rgba(217, 4, 41, 0.45);
+    margin-bottom: 25px;
+  }
+
+  h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    color: #ffd700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 0 0 12px #ffd700, 0 0 25px #ff0000, 0 0 40px #ffd700;
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    color: #ffffff;
+    font-size: 1.05rem;
+    letter-spacing: 1px;
+  }
+
+  .music-stage {
+    background: rgba(15, 15, 18, 0.92);
+    border: 2px solid #ffd700;
+border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 28px;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.28), inset 0 0 15px rgba(217, 4, 41, 0.35);
+  }
+
+  .music-stage h2 {
+    text-align: center;
+    color: #ffd700;
+    margin-bottom: 16px;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  }
+
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+  }
+
+  .video-box {
+    border: 1px solid #ffd700;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 0 18px rgba(255, 215, 0, 0.25);
+  }
+
+  .video-box iframe {
+    width: 100%;
+    height: 215px;
+    display: block;
+    border: none;
+  }
+
+  .video-title {
+    padding: 9px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #ffd700;
+    background: linear-gradient(90deg, #1a0505, #121215, #1a0505);
+    border-top: 1px solid rgba(255, 215, 0, 0.3);
+  }
+
+  .members-box {
+    background: linear-gradient(135deg, rgba(190, 0, 25, 0.28), rgba(10, 10, 12, 0.92));
+    border: 1px solid rgba(255, 215, 0, 0.65);
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 28px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.65);
+  }
+
+  .members-box h2 {
+    color: #ffd700;
+    font-size: 1.15rem;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    letter-spacing: 1.5px;
+  }
+
+  .member-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .member-tag {
+    background: #141418;
+    border: 1px solid #ffd700;
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.25);
+    transition: 0.3s;
+  }
+
+  .member-tag:hover {
+    background: #d90429;
+    transform: translateY(-3px);
+    box-shadow: 0 0 18px #ffd700;
+  }
+
+  .content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    background: rgba(18, 18, 22, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-top: 3px solid #d90429;
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.75);
+    transition: transform 0.3s, border-color 0.3s;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    border-color: #ffd700;
+    box-shadow: 0 0 22px rgba(255, 215, 0, 0.3);
+  }
+
+  .card.full-width {
+    grid-column: 1 / -1;
+  }
+
+  .card h3 {
+    color: #ffd700;
+    font-size: 1.22rem;
+    margin-bottom: 12px;
+    border-bottom: 1px dashed rgba(255, 215, 0, 0.35);
+    padding-bottom: 8px;
+  }
+
+  .card p, .card li {
+    color: #f4f4f4;
+    line-height: 1.65;
+    font-size: 0.98rem;
+  }
+
+  .card ul {
+    list-style: none;
+  }
+
+  .card li {
+    margin-bottom: 8px;
+    padding-left: 18px;
+    position: relative;
+  }
+
+  .card li::before {
+    content: "✦";
+color: #ffd700;
+    position: absolute;
+    left: 0;
+  }
+
+  .card li strong {
+    color: #ff4d6d;
+  }
+
+  .stage-floor {
+    height: 12px;
+    margin-top: 40px;
+    background: linear-gradient(90deg, #000, #d90429, #ffd700, #ffffff, #ffd700, #d90429, #000);
+    border-radius: 50%;
+    box-shadow: 0 0 28px #ffd700;
+  }
+</style>
+</head>
+<body>
+
+  <div class="stage-lasers" id="laserContainer"></div>
+  <div class="sparkles" id="sparkleContainer"></div>
+
+  <div class="stage-wrapper">
+    <div class="stage-lights">
+      <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+      <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+      <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+      <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+    </div>
+
+    <header>
+      <h1>✨ Merry Christmas ✨</h1>
+      <p class="subtitle">Sân Khấu Đêm Nhạc & Lễ Hội Giáng Sinh An Lành</p>
+    </header>
+
+    <section class="music-stage">
+      <h2>🎵 Âm Nhạc Sân Khấu Giáng Sinh 🎵</h2>
+      <div class="video-grid">
+        <div class="video-box">
+          <iframe src="https://youtube.com" title="Jingle Bells" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <div class="video-title">🔔 Jingle Bells - Christmas Songs</div>
+        </div>
+        <div class="video-box">
+          <iframe src="https://youtube.com" title="BLACKPINK Christmas" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <div class="video-title">🎤 Last Christmas & Rudolph (BLACKPINK)</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="members-box">
+      <h2>🎄 Thành Viên Thực Hiện 🎄</h2>
+      <div class="member-list">
+        <span class="member-tag">⭐ Phạm Trương Bình Quân</span>
+        <span class="member-tag">⭐ Phan Dương Uyển Nhi</span>
+        <span class="member-tag">⭐ Lương Thị Ngọc Thuỷ</span>
+        <span class="member-tag">⭐ Phạm Thị Thu Hoà</span>
+      </div>
+    </section>
+
+    <section class="content-grid">
+      <div class="card">
+        <h3>A. Nguồn gốc</h3>
+        <p>Lễ Giáng Sinh (còn gọi là Noel) có nguồn gốc từ Kitô giáo, kỷ niệm ngày Chúa Giê-su ra đời tại Bethlehem. Ngày lễ chính thức được tổ chức vào ngày 25 tháng 12 hằng năm, bắt đầu từ đêm 24 tháng 12 (lễ Vọng).</p>
+      </div>
+
+      <div class="card">
+        <h3>B. Ý nghĩa</h3>
+<p>Bên cạnh ý nghĩa tôn giáo thiêng liêng về sự ra đời của Đấng Cứu Thế, Giáng Sinh ngày nay còn là ngày lễ của gia đình và tình yêu thương. Đây là dịp để mọi người quây quần, chia sẻ niềm vui, trao nhau những lời chúc bình an và thể hiện sự quan tâm đến những người xung quanh.</p>
+      </div>
+
+      <div class="card full-width">
+        <h3>C. Biểu tượng</h3>
+        <ul>
+          <li><strong>Cây thông Noel:</strong> Biểu tượng của sức sống mãnh liệt, niềm hy vọng và sự ấm no ngay giữa mùa đông lạnh giá.</li>
+          <li><strong>Ông già Noel:</strong> Đại diện cho lòng nhân ái, sự hào phóng và niềm vui bất ngờ dành cho trẻ nhỏ.</li>
+          <li><strong>Ngôi sao Giáng Sinh:</strong> Dẫn lối và tượng trưng cho ánh sáng, phép màu của Chúa.</li>
+          <li><strong>Hang đá và máng cỏ:</strong> Tái hiện khung cảnh giản dị nơi Chúa Giê-su chào đời.</li>
+        </ul>
+      </div>
+
+      <div class="card full-width">
+        <h3>D. Hoạt động phổ biến</h3>
+        <p>Vào dịp này, mọi người thường cùng nhau trang trí nhà cửa, dựng cây thông, tặng quà và gửi thiệp chúc mừng. Các tín hữu Kitô giáo sẽ đến nhà thờ tham dự Thánh lễ đêm và hát Thánh ca, trong khi các gia đình tổ chức bữa tiệc ấm cúng bên nhau.</p>
+      </div>
+
+      <div class="card full-width">
+        <h3>E. Giáng Sinh tại Việt Nam</h3>
+        <p>Tại Việt Nam, dù không phải là ngày nghỉ lễ chính thức nhưng Giáng Sinh được đón nhận rất nồng nhiệt bởi cả người có đạo lẫn không theo đạo. Các con phố, trung tâm thương mại và xóm đạo được trang hoàng lộng lẫy từ sớm, thu hút đông đảo giới trẻ và các gia đình xuống đường dạo chơi, chụp ảnh và tận hưởng không khí lễ hội rộn ràng.
+      </div>
